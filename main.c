@@ -6,16 +6,49 @@
 /*   By: umartin- <umartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:51:43 by umartin-          #+#    #+#             */
-/*   Updated: 2024/12/02 15:50:28 by umartin-         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:46:46 by umartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <errno.h>
+
+extern int errno;
 
 extern size_t	ft_strlen(char *str);
 extern char		*ft_strcpy(char *dest, const char *src);
 extern int		ft_strcmp(const char *s1, const char *s2);
+extern ssize_t	ft_write(int fd, const void *buf, size_t count);
+
+void	test_ft_write(void)
+{
+	printf("\n--------------ft_write---------------\n\n");
+	char *buf = "TEST SENTENCE TO TEST WRITE.\n";
+	int fd = 1;
+	int n = strlen(buf);
+	errno = 0;
+	printf("write() return value \t\t [%zd]\n", write(fd, buf, n));
+	printf("ft_write() return value \t [%zd]\n", ft_write(fd, buf, n));
+	printf("\n");
+	errno = 0;
+	printf("write() return value \t\t [%zd]\n", write(fd, 0, n));
+	printf("write() errno \t\t\t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+	errno = 0;
+	printf("ft_write() return value \t [%zd]\n", ft_write(fd, 0, n));
+	printf("ft_write() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+	errno = 0;
+	printf("write() return value \t\t [%zd]\n", write(-1, 0, n));
+	printf("write() errno \t\t\t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+	errno = 0;
+	printf("ft_write() return value \t [%zd]\n", ft_write(-1, 0, n));
+	printf("ft_write() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+}
 
 void	test_ft_strlen(void)
 {
@@ -83,5 +116,6 @@ int	main(void)
 	test_ft_strlen();
 	test_ft_strcpy();
 	test_ft_strcmp();
+	test_ft_write();
 	return (0);
 }

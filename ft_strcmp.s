@@ -16,7 +16,7 @@ ft_strcmp:
 	.done:
 		xor rax, rax
     	ret                             ; Retornar
-	.diff
+	.diff:
 		sub rax, rbx
 		ret
 		

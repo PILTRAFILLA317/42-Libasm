@@ -3,7 +3,7 @@ AS = nasm
 AR = ar
 FLAGS = -f elf64 
 LIB = libasm.a
-SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s
+SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
 MAIN = main.s            # Archivo principal
 CMAIN = main.c           # Archivo principal en C
 MAIN_OBJS = $(MAIN:.s=.o)  # Objeto principal
