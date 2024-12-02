@@ -1,27 +1,19 @@
 # Variables
 AS = nasm
 AR = ar
-FLAGS = -f elf64
+FLAGS = -f elf64 
 LIB = libasm.a
-SRCS = ft_strlen.s ft_strcpy.s       # Archivo fuente para la librería
+SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s
 MAIN = main.s            # Archivo principal
 CMAIN = main.c           # Archivo principal en C
 MAIN_OBJS = $(MAIN:.s=.o)  # Objeto principal
 OBJS = $(SRCS:.s=.o)       # Objetos de la librería
-OUTPUT = test            # Nombre del ejecutable
-COUTPUT = ctest          # Nombre del ejecutable en C
+OUTPUT = test          # Nombre del ejecutable en C
 
-ctest: all $(COUTPUT)
-
-$(COUTPUT): $(CMAIN) $(LIB)
-	gcc -pie -o $@ $< $(LIB)  # Enlazar usando gcc
-
-# Regla para `make test`
 test: all $(OUTPUT)
 
-# Regla para crear el ejecutable
-$(OUTPUT): $(MAIN_OBJS) $(LIB)
-	ld -o $@ $(MAIN_OBJS) $(LIB)  # Enlazar usando ld
+$(OUTPUT): $(CMAIN) $(LIB)
+	gcc -fsanitize=address -g3 -o $@ $< $(LIB)  # Enlazar usando gcc
 
 # Regla para compilar el archivo principal
 $(MAIN_OBJS): $(MAIN)
@@ -44,4 +36,4 @@ clean:
 
 # Limpiar todo
 fclean: clean
-	rm -f $(LIB) $(OUTPUT) $(COUTPUT)
+	rm -f $(LIB) $(OUTPUT)
