@@ -3,7 +3,7 @@ AS = nasm
 AR = ar
 FLAGS = -f elf64 
 LIB = libasm.a
-SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s
+SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s
 MAIN = main.s            # Archivo principal
 CMAIN = main.c           # Archivo principal en C
 MAIN_OBJS = $(MAIN:.s=.o)  # Objeto principal
@@ -13,7 +13,7 @@ OUTPUT = test          # Nombre del ejecutable en C
 test: all $(OUTPUT)
 
 $(OUTPUT): $(CMAIN) $(LIB)
-	gcc -fsanitize=address -g3 -o $@ $< $(LIB)  # Enlazar usando gcc
+	gcc -fsanitize=address -g3 -o $@ $< $(LIB)
 
 # Regla para compilar el archivo principal
 $(MAIN_OBJS): $(MAIN)

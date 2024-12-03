@@ -6,14 +6,19 @@
 /*   By: umartin- <umartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:51:43 by umartin-          #+#    #+#             */
-/*   Updated: 2024/12/02 17:46:46 by umartin-         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:40:16 by umartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 extern int errno;
 
@@ -21,6 +26,93 @@ extern size_t	ft_strlen(char *str);
 extern char		*ft_strcpy(char *dest, const char *src);
 extern int		ft_strcmp(const char *s1, const char *s2);
 extern ssize_t	ft_write(int fd, const void *buf, size_t count);
+extern ssize_t	ft_read(int fd, void *buf, size_t count);
+
+void	test_ft_read(void)
+{
+	printf("\n--------------ft_read---------------\n\n");
+
+	char *file1 = "read.txt";
+	char *file2 = "";
+	char *buf1 = malloc(sizeof(char) * 50);
+	char *buf2 = malloc(sizeof(char) * 50);
+	
+	printf("--------------ft_read from file---------------\n\n");
+	int fd1 = open(file1, O_RDONLY);
+	if (fd1 == -1)
+	{
+		printf("Error opening file 1\n");
+		return ;
+	}
+	errno = 0;
+	ssize_t bytes_read = read(fd1, buf1, 40);
+	printf("read() return value \t [%zd]\n", bytes_read);
+	buf1[bytes_read] = '\0';
+	printf("read() read buf \t [%s]\n", buf1);
+	printf("read() errno \t\t [%d] \t [%s]\n\n", errno, strerror(errno));
+	errno = 0;
+	close(fd1);
+	fd1 = open(file1, O_RDONLY);
+	if (fd1 == -1)
+	{
+		printf("Error opening file 1\n");
+		return ;
+	}
+	ssize_t bytes_read2 = ft_read(fd1, buf1, 40);
+	printf("ft_read() return value \t [%zd]\n", bytes_read2);
+	buf1[bytes_read2] = '\0';
+	printf("ft_read() read buf \t [%s]\n", buf1);
+	printf("ft_read() errno \t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+
+	errno = 0;
+	
+	printf("--------------ft_read from empty file---------------\n\n");
+	int	fd2 = open(file2, O_RDONLY);
+	bytes_read = read(fd2, buf2, 40);
+	printf("read() return value \t [%zd]\n", read(fd2, buf2, 40));
+	if (bytes_read != -1)
+		buf2[bytes_read] = '\0';
+	else
+		buf2[0] = '\0';
+	printf("read() read buf \t [%s]\n", buf2);
+	printf("read() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
+	errno = 0;
+	bytes_read2 = ft_read(fd2, buf2, 40);
+	printf("ft_read() return value \t [%zd]\n", ft_read(fd2, buf2, 40));
+	if (bytes_read2 != -1)
+		buf2[bytes_read2] = '\0';
+	else
+		buf2[0] = '\0';
+	printf("ft_read() read buf \t [%s]\n", buf2);
+	printf("ft_read() errno \t [%d] \t [%s]\n", errno, strerror(errno));
+	close(fd2);
+	printf("\n");
+
+	printf("--------------ft_read from stdin---------------\n\n");
+	errno = 0;
+	printf("read() return value \t [%zd]\n", read(fd1, 0, 40));
+	printf("read() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
+	errno = 0;
+	printf("ft_read() return value \t [%zd]\n", ft_read(fd1, 0, 40));
+	printf("ft_read() errno \t [%d] \t [%s]\n", errno, strerror(errno));
+	close(fd1);
+	printf("\n");
+
+	printf("--------------ft_read from stdin---------------\n\n");
+	errno = 0;
+	printf("read() return value \t [%zd]\n", read(0, buf1, 40));
+	printf("read() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
+	errno = 0;
+	printf("ft_read() return value \t [%zd]\n", ft_read(0, buf1, 40));
+	printf("ft_read() errno \t [%d] \t [%s]\n", errno, strerror(errno));
+	printf("\n");
+
+	if (buf1)
+		free(buf1);
+	if (buf2)
+		free(buf2);
+}
 
 void	test_ft_write(void)
 {
@@ -117,5 +209,6 @@ int	main(void)
 	test_ft_strcpy();
 	test_ft_strcmp();
 	test_ft_write();
+	test_ft_read();
 	return (0);
 }
