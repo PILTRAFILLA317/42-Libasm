@@ -1,39 +1,44 @@
-# Variables
-AS = nasm
-AR = ar
-FLAGS = -f elf64 
-LIB = libasm.a
-SRCS = ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
-MAIN = main.s            # Archivo principal
-CMAIN = main.c           # Archivo principal en C
-MAIN_OBJS = $(MAIN:.s=.o)  # Objeto principal
-OBJS = $(SRCS:.s=.o)       # Objetos de la librería
-OUTPUT = test          # Nombre del ejecutable en C
+NAME = libasm_test
+LIB_PATH = ./libasm
+LIB = $(LIB_PATH)/libasm.a
+SRC = main.c
+OBJ = $(SRC:.c=.o)
 
-test: all $(OUTPUT)
+CC = gcc
 
-$(OUTPUT): $(CMAIN) $(LIB)
-	gcc -fsanitize=address -g3 -g -o $@ $< $(LIB)
+# Colores
+RED = \033[31m
+GREEN = \033[32m
+YELLOW = \033[33m
+BLUE = \033[34m
+RESET = \033[0m
 
-# Regla para compilar el archivo principal
-$(MAIN_OBJS): $(MAIN)
-	$(AS) $(FLAGS) -o $@ $<
+all: $(NAME)
 
-# Regla principal para crear la librería
-all: $(LIB)
+$(NAME): $(OBJ)
+	@echo "$(YELLOW)Compiling libray ($(LIB_PATH)...)$(RESET)"
+	@make -C $(LIB_PATH) --no-print-directory
+	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
+	@$(CC) -o $@ $^ $(LIB)
+	@echo "$(GREEN)Done: $(NAME)$(RESET)"
 
-# Crear la librería estática
-$(LIB): $(OBJS)
-	$(AR) rcs $@ $^
+%.o: %.c
+	@echo "$(BLUE)Compiling $< ...$(RESET)"
+	@sleep 0.1
+	@$(CC) -o $@ -c $<
+	@echo "$(GREEN) [OK]$(RESET)"
 
-# Compilar los archivos de la librería a objetos
-%.o: %.s
-	$(AS) $(FLAGS) -o $@ $<
-
-# Limpiar archivos intermedios
 clean:
-	rm -f $(MAIN_OBJS) $(OBJS)
+	@echo "$(RED)Cleaning objects...$(RESET)"
+	@rm -f $(OBJ)
 
-# Limpiar todo
 fclean: clean
-	rm -f $(LIB) $(OUTPUT)
+	@echo "$(RED)Cleaning library...$(RESET)"
+	@make fclean -C $(LIB_PATH) --no-print-directory
+	@echo "$(RED)Cleaning executable...$(RESET)"
+	@rm -f $(NAME)
+	@echo "$(RED)Done.$(RESET)"
+
+re: fclean all
+
+.PHONY: all clean fclean re

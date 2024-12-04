@@ -6,7 +6,7 @@
 /*   By: umartin- <umartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:51:43 by umartin-          #+#    #+#             */
-/*   Updated: 2024/12/04 16:34:50 by umartin-         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:01:11 by umartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	test_ft_read(void)
 
 	printf("--------------ft_read from stdin---------------\n\n");
 	errno = 0;
-	printf("read() return value \t [%zd]\n", read(fd1, 0, 40));
+	// printf("read() return value \t [%zd]\n", read(fd1, 0, 40));
 	printf("read() errno \t\t [%d] \t [%s]\n", errno, strerror(errno));
 	errno = 0;
 	printf("ft_read() return value \t [%zd]\n", ft_read(fd1, 0, 40));
