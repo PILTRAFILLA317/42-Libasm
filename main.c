@@ -6,7 +6,7 @@
 /*   By: umartin- <umartin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:51:43 by umartin-          #+#    #+#             */
-/*   Updated: 2024/12/03 16:40:16 by umartin-         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:34:50 by umartin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,53 @@ extern char		*ft_strcpy(char *dest, const char *src);
 extern int		ft_strcmp(const char *s1, const char *s2);
 extern ssize_t	ft_write(int fd, const void *buf, size_t count);
 extern ssize_t	ft_read(int fd, void *buf, size_t count);
+extern char		*ft_strdup(const char *s);
+
+void	test_ft_strdup(void)
+{
+	printf("\n--------------ft_strdup---------------\n\n");
+
+	char *str1 = "123456789";
+	char *str2 = "asdfasdfasdfasdf";
+	char *str3 = "";
+	char *str4 = "------------------9------------------sdfsfsdfsfasdfasdf---------------asdfasdf";
+	char *str5 = "this is a very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong string to test a function";
+
+	char *dup1 = strdup(str1);
+	char *dup1f = ft_strdup(str1);
+	printf("strdup is \t [%s] \n",	dup1);
+	printf("ft_strdup is \t [%s] \n\n", dup1f);
+	free(dup1);
+	free(dup1f);
+
+	dup1 = strdup(str2);
+	dup1f = ft_strdup(str2);
+	printf("strdup is \t [%s] \nft_strdup is \t [%s]\n\n", dup1, dup1f);
+	free(dup1);
+	free(dup1f);
+	dup1 = strdup(str2);
+	dup1f = ft_strdup(str2);
+	printf("strdup is \t [%s] \nft_strdup is \t [%s]\n\n", dup1, dup1f);
+	free(dup1);
+	free(dup1f);
+	dup1 = strdup(str3);
+	dup1f = ft_strdup(str3);
+	printf("strdup is \t [%s] \nft_strdup is \t [%s]\n\n", dup1, dup1f);
+	free(dup1);
+	free(dup1f);
+	dup1 = strdup(str4);
+	dup1f = ft_strdup(str4);
+	printf("strdup is \t [%s] \nft_strdup is \t [%s]\n\n", dup1, dup1f);
+	if (dup1)
+		free(dup1);
+	if (dup1f)
+		free(dup1f);
+	dup1 = strdup(str5);
+	dup1f = ft_strdup(str5);
+	printf("strdup is \t [%s] \nft_strdup is \t [%s]\n\n", dup1, dup1f);
+	free(dup1);
+	free(dup1f);
+}
 
 void	test_ft_read(void)
 {
@@ -209,6 +256,7 @@ int	main(void)
 	test_ft_strcpy();
 	test_ft_strcmp();
 	test_ft_write();
-	test_ft_read();
+	test_ft_strdup();
+	// test_ft_read();
 	return (0);
 }
